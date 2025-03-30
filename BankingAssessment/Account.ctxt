@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=Account
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Accounts\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=
+comment1.target=Account()
+comment2.params=withdrawlAmount
+comment2.target=void\ Withdraw(double)
+comment3.params=depositAmount
+comment3.target=void\ Deposit(double)
+comment4.params=
+comment4.target=double\ displayBalance()
+numComments=5
