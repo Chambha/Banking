@@ -5,9 +5,9 @@
  * @author (your name)
  * @version (a version number or a date)
  */
-public class EverydayAccount extends Account
+public class EverydayAccount extends Account //subclass for everyday account type which extends account
 {
     public EverydayAccount(){
-        accountType = "Everyday Account";
+        accountType = "Everyday Account"; //set the account type
     }
 }

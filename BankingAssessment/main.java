@@ -32,16 +32,49 @@ public class main
         File myFile = new File("bankData.csv");
         
         
-        try { 
-            FileWriter myWriter = new FileWriter(myFile);
-            myWriter.write(keyboard.nextLine());  
+        // try { 
+            // FileWriter myWriter = new FileWriter(myFile);
+            // myWriter.write(keyboard.nextLine());  
             
+            // myWriter.flush();  
+            // myWriter.close();
+        // } catch(IOException e) {
+            // System.out.println(e);
+            // System.out.println("There was an error writing to the file");
+        // }
+        
+        try {
+            Scanner myReader = new Scanner(myFile);
+            ArrayList<String> fileNames = new ArrayList<String>();
             
-            myWriter.flush();  
-            myWriter.close();
+            while(myReader.hasNextLine()){
+                myReader.useDelimiter(","); //seperates the informaion in the file by comma
+                 while (myReader.hasNext()) {
+                    fileNames.add(myReader.next());
+                }
+            }
+
+            //build customer
+            for (int i=0; i<fileNames.size(); i++){
+                System.out.println(fileNames.get(i));
+            }
+            
+            Customer fileCustomer = new Customer(); 
+            fileCustomer.Name = fileNames.get(0); //gets each element of the arrayList startring from 0
+            fileCustomer.Address = fileNames.get(1);
+            
+            Account fileAccount = new Account();
+            fileAccount.accountNumber = fileNames.get(2);
+            fileAccount.accountType = fileNames.get(3);
+            Double accountBalance = Double.parseDouble(fileNames.get(4)); //converts the string to a double so that the maths in the account class works for the balance
+            fileAccount.currentBalance = accountBalance;
+            
+            fileCustomer.addCustomerAccount(fileAccount);
+            
+            customerList.add(fileCustomer); //add the customer in the file to the customerList arraylist    
         } catch(IOException e) {
             System.out.println(e);
-            System.out.println("Error");
+            System.out.println("There was an error reading from the file");
         }
         
         while(running){
@@ -69,22 +102,22 @@ public class main
         Account account1 = new Account();   
         account1.accountNumber = keyboard.nextLine();
         
-        System.out.println("Select an option for account type");
-        System.out.println("(1) - Everyday");
-        System.out.println("(2) - Savings");
+        System.out.println("Select an option for account type"); //Switch statement to select different account types
+        System.out.println("(1) - Everyday"); 
+        System.out.println("(2) - Savings"); 
         System.out.println("(3) - Current");
         
         int choice = keyboard.nextInt();
         
         switch (choice){
-            case 1: //Everyday    
+            case 1: //Everyday   
                 System.out.println("Everyday");
                 EverydayAccount everyday = new EverydayAccount();
                 account1 = everyday;
                 break;
             
             case 2: //Savings
-                System.out.println("Savings");
+                System.out.println("Savings"); 
                 break;
                 
             case 3: //Current
