@@ -21,27 +21,34 @@ public class main
         //System.out.println(customerList.get(0).Name);          
         customerList.get(0).addCustomerAccount(createAccount());
         
-        System.out.println(customerList.get(0).accountList.get(0).accountType);
-        System.out.println(customerList.get(0).accountList.get(0).displayBalance());
-        customerList.get(0).accountList.get(0).Deposit(10.0);
-        System.out.println(customerList.get(0).accountList.get(0).displayBalance());
-        customerList.get(0).accountList.get(0).Withdraw(5.0);
-        System.out.println(customerList.get(0).accountList.get(0).displayBalance());
+        // System.out.println(customerList.get(0).accountList.get(0).accountType);
+        // System.out.println(customerList.get(0).accountList.get(0).displayBalance());
+        // customerList.get(0).accountList.get(0).Deposit(10.0);
+        // System.out.println(customerList.get(0).accountList.get(0).displayBalance());
+        // customerList.get(0).accountList.get(0).Withdraw(5.0);
+        // System.out.println(customerList.get(0).accountList.get(0).displayBalance());
         
         boolean running = true;
         File myFile = new File("bankData.csv");
         
         
-        // try { 
-            // FileWriter myWriter = new FileWriter(myFile);
-            // myWriter.write(keyboard.nextLine());  
+        try { 
+            FileWriter myWriter = new FileWriter(myFile);
+            //myWriter.write(keyboard.nextLine());  
             
-            // myWriter.flush();  
-            // myWriter.close();
-        // } catch(IOException e) {
-            // System.out.println(e);
-            // System.out.println("There was an error writing to the file");
-        // }
+            //write the customerList information into a file
+            for (Customer fileCustomer : customerList){ 
+                for (Account fileAccount : fileCustomer.accountList){
+                    myWriter.write(fileCustomer.Name + "," + fileCustomer.Address + "," + fileAccount.accountNumber);
+                }
+            }
+        
+            myWriter.flush();  
+            myWriter.close();
+        } catch(IOException e) {
+            System.out.println(e);
+            System.out.println("There was an error writing to the file");
+        }
         
         try {
             Scanner myReader = new Scanner(myFile);
@@ -59,19 +66,19 @@ public class main
                 System.out.println(fileNames.get(i));
             }
             
-            Customer fileCustomer = new Customer(); 
-            fileCustomer.Name = fileNames.get(0); //gets each element of the arrayList startring from 0
-            fileCustomer.Address = fileNames.get(1);
+            // Customer fileCustomer = new Customer(); 
+            // fileCustomer.Name = fileNames.get(0); //gets each element of the arrayList startring from 0
+            // fileCustomer.Address = fileNames.get(1);
             
-            Account fileAccount = new Account();
-            fileAccount.accountNumber = fileNames.get(2);
-            fileAccount.accountType = fileNames.get(3);
-            Double accountBalance = Double.parseDouble(fileNames.get(4)); //converts the string to a double so that the maths in the account class works for the balance
-            fileAccount.currentBalance = accountBalance;
+            // Account fileAccount = new Account();
+            // fileAccount.accountNumber = fileNames.get(2);
+            // fileAccount.accountType = fileNames.get(3);
+            // Double accountBalance = Double.parseDouble(fileNames.get(4)); //converts the string to a double so that the maths in the account class works for the balance
+            // fileAccount.currentBalance = accountBalance;
             
-            fileCustomer.addCustomerAccount(fileAccount);
+            // fileCustomer.addCustomerAccount(fileAccount);
             
-            customerList.add(fileCustomer); //add the customer in the file to the customerList arraylist    
+            // customerList.add(fileCustomer); //add the customer in the file to the customerList arraylist    
         } catch(IOException e) {
             System.out.println(e);
             System.out.println("There was an error reading from the file");
@@ -99,31 +106,45 @@ public class main
         Scanner keyboard = new Scanner(System.in);
         
         System.out.println("Input account number");
-        Account account1 = new Account();   
+        Account account1 = new Account();  
         account1.accountNumber = keyboard.nextLine();
+        
         
         System.out.println("Select an option for account type"); //Switch statement to select different account types
         System.out.println("(1) - Everyday"); 
         System.out.println("(2) - Savings"); 
         System.out.println("(3) - Current");
         
-        int choice = keyboard.nextInt();
-        
-        switch (choice){
-            case 1: //Everyday   
-                System.out.println("Everyday");
-                EverydayAccount everyday = new EverydayAccount();
-                account1 = everyday;
-                break;
+        if(keyboard.hasNextInt()){
+            int choice = keyboard.nextInt(); //checks if the input is a number 
+            if (choice != 1 && choice != 2 && choice != 3){
+                System.out.println("Please enter a valid input"); //if the input is not equal to 1, 2, or 3, print out invalid
+            } else {
+                switch (choice){
+                    case 1: //Everyday   
+                        System.out.println("Everyday");
+                        EverydayAccount everyday = new EverydayAccount(); 
+                        account1 = everyday; //if "Everyday" is selected, account type is set to Everyday
+                        break;
             
-            case 2: //Savings
-                System.out.println("Savings"); 
-                break;
+                    case 2: //Savings
+                        System.out.println("Savings"); 
+                        SavingsAccount savings = new SavingsAccount();
+                        account1 = savings; //if "Savings" is selected, account type is set to Savings
+                        break;
                 
-            case 3: //Current
-                System.out.println("Current");
-                break;
+                    case 3: //Current
+                        System.out.println("Current");
+                        CurrentAccount current = new CurrentAccount();
+                        account1 = current; //if "Current" is selected, account type is set to Current
+                        break;
+                }
+            }
+            } else {
+                System.out.println("Input must be a number"); //if the input is not equal to a number print out invalid
         }
-        return account1;
+        return account1;  
     }
 }
+
+

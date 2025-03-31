@@ -9,6 +9,5 @@ public class CurrentAccount extends Account //subclass for current account type 
 {
     public CurrentAccount(){
         accountType = "Current Account"; //set the account type
-        currentBalance =+- 1000;
     }
 }
