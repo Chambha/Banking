@@ -39,12 +39,13 @@ public class main
             //write the customerList information into a file
             for (Customer fileCustomer : customerList){ 
                 for (Account fileAccount : fileCustomer.accountList){
-                    myWriter.write(fileCustomer.Name + "," + fileCustomer.Address + "," + fileAccount.accountNumber);
+                    myWriter.write("," + fileCustomer.Name + "," + fileCustomer.Address + "," + fileAccount.accountNumber + "," + fileAccount.accountType + "," + fileAccount.currentBalance);
                 }
             }
         
             myWriter.flush();  
             myWriter.close();
+            
         } catch(IOException e) {
             System.out.println(e);
             System.out.println("There was an error writing to the file");
@@ -78,7 +79,8 @@ public class main
             
             // fileCustomer.addCustomerAccount(fileAccount);
             
-            // customerList.add(fileCustomer); //add the customer in the file to the customerList arraylist    
+            // customerList.add(fileCustomer); //add the customer in the file to the customerList arraylist so that any existing customers can have their info updated 
+            
         } catch(IOException e) {
             System.out.println(e);
             System.out.println("There was an error reading from the file");
@@ -104,11 +106,11 @@ public class main
     
     public static Account createAccount(){ //this method is to create accounts with a number and type.
         Scanner keyboard = new Scanner(System.in);
-        
+                
         System.out.println("Input account number");
         Account account1 = new Account();  
-        account1.accountNumber = keyboard.nextLine();
-        
+        //account1.accountNumber = keyboard.nextLine();
+        String accountNumberInput = keyboard.nextLine(); //User inputs account number
         
         System.out.println("Select an option for account type"); //Switch statement to select different account types
         System.out.println("(1) - Everyday"); 
@@ -116,7 +118,8 @@ public class main
         System.out.println("(3) - Current");
         
         if(keyboard.hasNextInt()){
-            int choice = keyboard.nextInt(); //checks if the input is a number 
+            int choice = keyboard.nextInt(); //checks if the input is a number
+            keyboard.nextLine();
             if (choice != 1 && choice != 2 && choice != 3){
                 System.out.println("Please enter a valid input"); //if the input is not equal to 1, 2, or 3, print out invalid
             } else {
@@ -143,6 +146,7 @@ public class main
             } else {
                 System.out.println("Input must be a number"); //if the input is not equal to a number print out invalid
         }
+        account1.accountNumber = accountNumberInput;
         return account1;  
     }
 }
