@@ -4,4 +4,6 @@ comment1.params=
 comment1.target=Customer()
 comment2.params=account
 comment2.target=void\ addCustomerAccount(Account)
-numComments=3
+comment3.params=
+comment3.target=Customer\ createCustomer()
+numComments=4

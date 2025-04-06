@@ -18,11 +18,31 @@ public class Account
     }
     
     public void Withdraw(double withdrawlAmount){ //Create withdrawl function, subtract from current balance
-        currentBalance -= withdrawlAmount;
+        boolean successfulWithdrawl = false;
+        if (accountType == "Current Account" && currentBalance-withdrawlAmount > -1000 
+        && withdrawlAmount < 5000.01){
+            successfulWithdrawl = true;
+        } 
+        
+        if (accountType != "Current Account" && currentBalance-withdrawlAmount < 0 && withdrawlAmount < 5000.01){
+            successfulWithdrawl = true;
+        }
+        
+        if (successfulWithdrawl){
+            currentBalance -= withdrawlAmount;
+        
+            System.out.println("Withdrawl of $" + withdrawlAmount + "was successful!");
+            System.out.println("New balance is $" + displayBalance());
+        } else {
+            System.out.println("Withdrawl unsuccessful");
+        }
     }
-    
-    public void Deposit(double depositAmount){ //Create deposit function, add to currentbalance
+        
+        public void Deposit(double depositAmount){ //Create deposit function, add to currentbalance
         currentBalance += depositAmount;
+        
+        System.out.println("deposit of $" + depositAmount + " was successful!");
+        System.out.println("New balance is $" + displayBalance());
     }
     
     public double displayBalance(){  
