@@ -59,17 +59,23 @@ public class main
             System.out.println("There was an error reading from the file");
         }
         
+        while (running){
         System.out.println("Welcome! would you like to:"); //prompt user to select a function
         System.out.println("(1) - Create account for a new customer"); 
         System.out.println("(2) - Create account for existing customer"); 
         System.out.println("(3) - Close account for existing customer");
         System.out.println("(4) - Access balance of an account");
         System.out.println("(5) - Deposit/withdraw from an account");
+        System.out.println("(6) - Close operations & write to file");
+        
+        String customerAccountSearch;
+        String customerSearch;
         
         if(keyboard.hasNextInt()){
             int selectOption = keyboard.nextInt(); //checks if the input is a number
             keyboard.nextLine(); //clear the enter
-            if (selectOption != 1 && selectOption != 2 && selectOption != 3 && selectOption != 4 && selectOption != 5){
+            if (selectOption != 1 && selectOption != 2 && selectOption != 3 && selectOption != 4 
+            && selectOption != 5 && selectOption != 6){
                 System.out.println("Please enter a valid input"); //if the input is not equal to 1, 2, 3, 4, or 5 print out invalid
             } else {
                 switch (selectOption){
@@ -84,27 +90,52 @@ public class main
                         
                     case 2: 
                         System.out.println("Enter the name of the customer you wish to open a new account for:"); 
-                        String customerSearch = keyboard.nextLine(); //Search for customer 
+                        customerSearch = keyboard.nextLine(); //Search for customer 
                         
                         Customer existingCustomer = new Customer(); //Copy existing customer so that all customer names have one account
                         
+                        
                         for (Customer customer : customerList){ 
                             if(customer.Name.equals(customerSearch.trim())){
+                                
                                 System.out.println("Customer " + customerSearch + " found, input new account details:");
                                 
                                 existingCustomer.Name = customer.Name;
                                 existingCustomer.Address = customer.Address;
+                                
+                                Account existingCustomerNewAccount = Account.createAccount(); //Create a new account for existing customer
+                                existingCustomer.accountList.add(existingCustomerNewAccount); //add new account to existing customer 
+                                customerList.add(existingCustomer); //add customer to customer list
+                                
                                 break; 
+                            } else {
+                                System.out.println("Customer " + customerSearch + " not found");
                             }
+                           
                         }
-                        
-                        Account existingCustomerNewAccount = Account.createAccount(); //Create a new account for existing customer
-                        existingCustomer.accountList.add(existingCustomerNewAccount); //add new account to existing customer 
-                        customerList.add(existingCustomer); //add customer to customer list
                         break;
                         
                     case 3:
-                        System.out.println("test3");
+                        System.out.println("Enter the name of the customer whos account you would like to delete:");
+                        customerSearch = keyboard.nextLine();
+                        System.out.println("Enter the account number of the account you would like to delete:");
+                        customerAccountSearch = keyboard.nextLine();
+                        int customerLocation = 0;
+                        boolean customerFound = false;
+                        for (Customer customer : customerList){ 
+                            if(customer.Name.equals(customerSearch.trim()) 
+                            && customer.accountList.get(0).accountNumber.equals(customerAccountSearch)){
+                                customerFound = true;
+                                customerLocation = customerList.indexOf(customer);
+                            } else {
+                                System.out.println("Customer not found");
+                            }
+                        }
+                        
+                        if (customerFound){
+                            customerList.remove(customerLocation);
+                            System.out.println("Account " + customerAccountSearch + " deleted for " + customerSearch);
+                        }
                         break;
                         
                     case 4: 
@@ -124,7 +155,7 @@ public class main
                         System.out.println("Enter the customers name that you would like to deposit/withdraw money for");
                         customerSearch = keyboard.nextLine(); //Search for customer 
                         System.out.println("Enter the customers account number");
-                        String customerAccountSearch = keyboard.nextLine();
+                        customerAccountSearch = keyboard.nextLine();
                         for (Customer customer : customerList){ 
                             if(customer.Name.equals(customerSearch.trim()) 
                             && customer.accountList.get(0).accountNumber.equals(customerAccountSearch)){
@@ -156,42 +187,68 @@ public class main
                                 }
                                 break; //add this outside the loop for test (2 lines down)
                         }
-                        
+                }
+                
+                    case 6: 
+                try { 
+                    FileWriter myWriter = new FileWriter(myFile);
+                    //myWriter.write(keyboard.nextLine());  
+                    
+                    //write the customerList information into a file
+                    for (Customer fileCustomer : customerList){ 
+                        for (Account fileAccount : fileCustomer.accountList){
+                            myWriter.write(fileCustomer.Name + "," + fileCustomer.Address + "," + fileAccount.accountNumber + "," + 
+                            fileAccount.accountType + "," + fileAccount.currentBalance + "," + "\n");
+                        }
+                    }
+                
+                    myWriter.flush();  
+                    myWriter.close();
+                    
+                } catch(IOException e) {
+                    System.out.println(e);
+                    System.out.println("There was an error writing to the file");
+                }
+                
+                System.out.println("-End of day summary-");
+                System.out.println("____________________");
+                System.out.println("Total cash in system: ");
+                System.out.println("Net deposit/withdrawals: ");
+                
+                running = false;
+                break;
+                            
                 }
             }
-        }
         }else {
                 System.out.println("Input must be a number"); //if the input is not equal to a number print out invalid
         }
-        
+        }
         
         //customerList.add(createCustomer()); //add new customer to the arraylist
         //System.out.println(customerList.get(0).Name);          
         //customerList.get(0).addCustomerAccount(Account.createAccount());
         
-        try { 
-            FileWriter myWriter = new FileWriter(myFile);
-            //myWriter.write(keyboard.nextLine());  
+        // try { 
+            // FileWriter myWriter = new FileWriter(myFile);
+            // //myWriter.write(keyboard.nextLine());  
             
-            //write the customerList information into a file
-            for (Customer fileCustomer : customerList){ 
-                for (Account fileAccount : fileCustomer.accountList){
-                    myWriter.write(fileCustomer.Name + "," + fileCustomer.Address + "," + fileAccount.accountNumber + "," + 
-                    fileAccount.accountType + "," + fileAccount.currentBalance + "," + "\n");
-                }
-            }
+            // //write the customerList information into a file
+            // for (Customer fileCustomer : customerList){ 
+                // for (Account fileAccount : fileCustomer.accountList){
+                    // myWriter.write(fileCustomer.Name + "," + fileCustomer.Address + "," + fileAccount.accountNumber + "," + 
+                    // fileAccount.accountType + "," + fileAccount.currentBalance + "," + "\n");
+                // }
+            // }
         
-            myWriter.flush();  
-            myWriter.close();
+            // myWriter.flush();  
+            // myWriter.close();
             
-        } catch(IOException e) {
-            System.out.println(e);
-            System.out.println("There was an error writing to the file");
-        }
-        
-        while(running){
-            
-        }
+        // } catch(IOException e) {
+            // System.out.println(e);
+            // System.out.println("There was an error writing to the file");
+        // }
+    
     }
     
     // public static Customer createCustomer(){ //this method prompts the user to input customer information to add the customer to the system
