@@ -145,9 +145,13 @@ public class main
                                         System.out.println("Enter the amount you would like to deposit:");
                                         double depositMoney = keyboard.nextDouble();
                                         customer.accountList.get(0).Deposit(depositMoney);
+                                        break;
                                         
                                         case 2: //withdraw
                                         System.out.println("Enter the amount you would like to withdraw:");
+                                        double withdrawMoney = keyboard.nextDouble();
+                                        customer.accountList.get(0).Withdraw(withdrawMoney);    
+                                        break;
                                     }
                                 }
                                 break; //add this outside the loop for test (2 lines down)

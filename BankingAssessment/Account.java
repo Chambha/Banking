@@ -18,7 +18,7 @@ public class Account
     }
     
     public void Withdraw(double withdrawlAmount){ //Create withdrawl function, subtract from current balance
-        boolean successfulWithdrawl = false;
+        boolean successfulWithdrawl = true;
         if (accountType == "Current Account" && currentBalance-withdrawlAmount > -1000 
         && withdrawlAmount < 5000.01){
             successfulWithdrawl = true;
@@ -31,7 +31,7 @@ public class Account
         if (successfulWithdrawl){
             currentBalance -= withdrawlAmount;
         
-            System.out.println("Withdrawl of $" + withdrawlAmount + "was successful!");
+            System.out.println("Withdrawl of $" + withdrawlAmount + " was successful!");
             System.out.println("New balance is $" + displayBalance());
         } else {
             System.out.println("Withdrawl unsuccessful");
